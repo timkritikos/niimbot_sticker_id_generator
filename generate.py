@@ -47,7 +47,7 @@ def create_label(u, path="/tmp/label.png"):
 
     # --- TEXT ---
     try:
-        font = ImageFont.truetype("/home/user/Downloads/Oswald/Oswald-VariableFont_wght.ttf", 46)
+        font = ImageFont.truetype("./Oswald-VariableFont_wght.ttf", 46)
     except:
         font = ImageFont.load_default()
 
