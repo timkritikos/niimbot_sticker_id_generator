@@ -6,6 +6,7 @@ import qrcode
 
 from niimprint import SerialTransport, PrinterClient
 
+import argparse
 
 def uuid7():
     ts_ms = int(datetime.utcnow().timestamp() * 1000)
@@ -25,9 +26,9 @@ def split_uuid(u):
     return s[:18], s[18:]  # 18 + 18 chars
 
 
-def create_label(u, path="/tmp/label.png", title = "Scanned photo ID:"):
-    line1, line2 = split_uuid(u)
-    full = str(u)
+def create_label(uuid, title, path="/tmp/label.png"):
+    line1, line2 = split_uuid(uuid)
+    full = str(uuid)
 
     width, height = 475, 120
     img = Image.new("1", (width, height), 1)
@@ -69,8 +70,8 @@ def create_label(u, path="/tmp/label.png", title = "Scanned photo ID:"):
     return path
 
 
-def print_label(path):
-    transport = SerialTransport(port="/dev/ttyACM0")
+def print_label(path,serial):
+    transport = SerialTransport(port=serial)
     printer = PrinterClient(transport)
 
     image = Image.open(path)
@@ -82,10 +83,22 @@ def print_label(path):
 
 
 if __name__ == "__main__":
-    u = uuid7()
-    print("UUIDv7:", u)
 
-    path = create_label(u)
-    print("Saved:", path)
+    parser = argparse.ArgumentParser(
+                    prog='Sticker ID Generator',
+                    description='Generate ID sticker')
+    parser.add_argument('-s', '--serial-port', default="/dev/ttyACM0" )
+    parser.add_argument('-t', '--title', default="Scanned photo ID:" )
+    parser.add_argument('-v', '--version', action='store_true' )
+    args = parser.parse_args()
+    
+    if args.version == True:
+        print("v0.0")
+    else:
+        u = uuid7()
+        print("UUIDv7:", u)
 
-    print_label(path)
+        path = create_label(u,args.title)
+        print("Saved:", path)
+
+        print_label(path,args.serial_port)
