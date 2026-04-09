@@ -29,18 +29,25 @@ def create_label(u, path="/tmp/label.png"):
     line1, line2 = split_uuid(u)
     full = str(u)
 
-    width, height = 700, 96
+    width, height = 475, 96
     img = Image.new("1", (width, height), 1)
     draw = ImageDraw.Draw(img)
 
     # --- QR ---
-    qr = qrcode.make(full)
-    qr = qr.resize((96, 96)).convert("1")
-    img.paste(qr, (0, 0))
+    qr = qrcode.QRCode(
+            version=1,
+            error_correction=qrcode.constants.ERROR_CORRECT_Q,
+            box_size=3,
+            border=0,
+            )
+    qr.add_data(full)
+    qr.make()
+    qr_img = qr.make_image(fill_color="black", back_color="white")
+    img.paste(qr_img, (0, 0))
 
     # --- TEXT ---
     try:
-        font = ImageFont.truetype("DejaVuSansMono.ttf", 28)
+        font = ImageFont.truetype("/home/user/Downloads/Oswald/Oswald-VariableFont_wght.ttf", 46)
     except:
         font = ImageFont.load_default()
 
@@ -52,7 +59,7 @@ def create_label(u, path="/tmp/label.png"):
     bbox2 = draw.textbbox((0, 0), line2, font=font)
 
     total_h = (bbox1[3] - bbox1[1]) + (bbox2[3] - bbox2[1]) + line_spacing
-    start_y = (height - total_h) // 2
+    start_y = (height - total_h) // 2 - 17
 
     draw.text((text_x, start_y), line1, fill=0, font=font)
     draw.text((text_x, start_y + (bbox1[3] - bbox1[1]) + line_spacing), line2, fill=0, font=font)
@@ -70,7 +77,7 @@ def print_label(path):
     # equivalent to -r 90
     image = image.rotate(-90, expand=True)
 
-    printer.print_image(image, density=5)
+    printer.print_image(image, density=3)
 
 
 if __name__ == "__main__":
