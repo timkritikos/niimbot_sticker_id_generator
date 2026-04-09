@@ -36,7 +36,7 @@ def create_label(u, path="/tmp/label.png"):
     # --- QR ---
     qr = qrcode.QRCode(
             version=1,
-            error_correction=qrcode.constants.ERROR_CORRECT_Q,
+            error_correction=qrcode.constants.ERROR_CORRECT_M,
             box_size=3,
             border=0,
             )
