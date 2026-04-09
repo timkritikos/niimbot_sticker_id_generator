@@ -26,7 +26,7 @@ def split_uuid(u):
     return s[:18], s[18:]  # 18 + 18 chars
 
 
-def create_label(uuid, title, path="/tmp/label.png"):
+def create_label(uuid, title, path="label.png"):
     line1, line2 = split_uuid(uuid)
     full = str(uuid)
 
@@ -43,12 +43,12 @@ def create_label(uuid, title, path="/tmp/label.png"):
             )
     qr.add_data(full)
     qr.make()
-    qr_img = qr.make_image(fill_color="black", back_color="white")
+    qr_img = qr.make_image(fill_color="black", back_color="white").convert("1")
     img.paste(qr_img, (10, 2))
 
     # --- TEXT ---
-    codefont = ImageFont.truetype("./BebasNeue-Regular.ttf", 48)
-    textfont = ImageFont.truetype("./PatrickHand-Regular.ttf", 37)
+    codefont = ImageFont.truetype("BebasNeue-Regular.ttf", 48)
+    textfont = ImageFont.truetype("PatrickHand-Regular.ttf", 37)
 
     text_x = 133
 
