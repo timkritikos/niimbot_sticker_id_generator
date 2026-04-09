@@ -43,15 +43,15 @@ def create_label(u, path="/tmp/label.png"):
     qr.add_data(full)
     qr.make()
     qr_img = qr.make_image(fill_color="black", back_color="white")
-    img.paste(qr_img, (0, 0))
+    img.paste(qr_img, (10, 0))
 
     # --- TEXT ---
     try:
-        font = ImageFont.truetype("./Oswald-VariableFont_wght.ttf", 46)
+        font = ImageFont.truetype("./BebasNeue-Regular.ttf", 50)
     except:
         font = ImageFont.load_default()
 
-    text_x = 110
+    text_x = 117
 
     # vertical centering for 2 lines
     line_spacing = 6
@@ -59,7 +59,7 @@ def create_label(u, path="/tmp/label.png"):
     bbox2 = draw.textbbox((0, 0), line2, font=font)
 
     total_h = (bbox1[3] - bbox1[1]) + (bbox2[3] - bbox2[1]) + line_spacing
-    start_y = (height - total_h) // 2 - 17
+    start_y = (height - total_h) // 2 - 10
 
     draw.text((text_x, start_y), line1, fill=0, font=font)
     draw.text((text_x, start_y + (bbox1[3] - bbox1[1]) + line_spacing), line2, fill=0, font=font)
