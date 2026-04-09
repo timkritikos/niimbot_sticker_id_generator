@@ -1,4 +1,4 @@
-import uuid
+import uuid6
 from datetime import datetime
 
 from PIL import Image, ImageDraw, ImageFont
@@ -9,16 +9,8 @@ from niimprint import SerialTransport, PrinterClient
 import argparse
 
 def uuid7():
-    ts_ms = int(datetime.utcnow().timestamp() * 1000)
-    rand = uuid.uuid4().int & ((1 << 74) - 1)
 
-    value = (ts_ms << 74) | rand
-    value &= ~(0xF << 76)
-    value |= (0x7 << 76)
-    value &= ~(0x3 << 62)
-    value |= (0x2 << 62)
-
-    return uuid.UUID(int=value)
+    return uuid6.uuid7()
 
 
 def split_uuid(u):
