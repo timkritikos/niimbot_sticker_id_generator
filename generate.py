@@ -29,15 +29,15 @@ def create_label(u, path="/tmp/label.png"):
     line1, line2 = split_uuid(u)
     full = str(u)
 
-    width, height = 475, 96
+    width, height = 475, 120
     img = Image.new("1", (width, height), 1)
     draw = ImageDraw.Draw(img)
 
     # --- QR ---
     qr = qrcode.QRCode(
             version=1,
-            error_correction=qrcode.constants.ERROR_CORRECT_M,
-            box_size=3,
+            error_correction=qrcode.constants.ERROR_CORRECT_L,
+            box_size=4,
             border=0,
             )
     qr.add_data(full)
@@ -51,7 +51,7 @@ def create_label(u, path="/tmp/label.png"):
     except:
         font = ImageFont.load_default()
 
-    text_x = 117
+    text_x = 130
 
     # vertical centering for 2 lines
     line_spacing = 6
