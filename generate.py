@@ -33,7 +33,7 @@ def create_label(uuid, title, path="label.png"):
             box_size=6,
             border=0,
             )
-    print(uuid.bytes.hex())
+
     qr.add_data(uuid.bytes)
     qr.make()
     qr_img = qr.make_image(fill_color="black", back_color="white").convert("1")
@@ -83,12 +83,16 @@ if __name__ == "__main__":
     parser.add_argument('-s', '--serial-port', default="/dev/ttyACM0" )
     parser.add_argument('-t', '--title', default="Scanned photo ID:" )
     parser.add_argument('-v', '--version', action='store_true' )
+    parser.add_argument('-u', '--uuid')
     args = parser.parse_args()
     
     if args.version == True:
         print("v0.0")
     else:
-        u = uuid7()
+        if args.uuid != None:
+            u = uuid6.UUID(hex=args.uuid)
+        else:
+            u = uuid7()
         print("UUIDv7:", u)
 
         path = create_label(u,args.title)
