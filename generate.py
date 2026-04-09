@@ -22,30 +22,31 @@ def create_label(uuid, title, path="label.png"):
     line1, line2 = split_uuid(uuid)
     full = str(uuid)
 
-    width, height = 475, 120
+    width, height = 475, 125
     img = Image.new("1", (width, height), 1)
     draw = ImageDraw.Draw(img)
 
     # --- QR ---
     qr = qrcode.QRCode(
             version=1,
-            error_correction=qrcode.constants.ERROR_CORRECT_M,
-            box_size=4,
+            error_correction=qrcode.constants.ERROR_CORRECT_L,
+            box_size=6,
             border=0,
             )
-    qr.add_data(full)
+    print(uuid.bytes.hex())
+    qr.add_data(uuid.bytes)
     qr.make()
     qr_img = qr.make_image(fill_color="black", back_color="white").convert("1")
-    img.paste(qr_img, (10, 2))
+    img.paste(qr_img, (10, 0))
 
     # --- TEXT ---
-    codefont = ImageFont.truetype("BebasNeue-Regular.ttf", 48)
-    textfont = ImageFont.truetype("PatrickHand-Regular.ttf", 37)
+    codefont = ImageFont.truetype("BebasNeue-Regular.ttf", 47)
+    textfont = ImageFont.truetype("PatrickHand-Regular.ttf", 40)
 
-    text_x = 133
+    text_x = 145
 
     _, _, w, _ = draw.textbbox((0, 0), title , font=textfont)
-    draw.text(((width-133-w)/2+133, -10), title, font=textfont, fill=0)
+    draw.text(((width-133-w)/2+133, -12), title, font=textfont, fill=0)
 
     # vertical centering for 2 lines
     line_spacing = 6
@@ -53,7 +54,7 @@ def create_label(uuid, title, path="label.png"):
     bbox2 = draw.textbbox((0, 0), line2, font=codefont)
 
     total_h = (bbox1[3] - bbox1[1]) + (bbox2[3] - bbox2[1]) + line_spacing
-    start_y = 33
+    start_y = 40
 
     draw.text((text_x, start_y), line1, fill=0, font=codefont)
     draw.text((text_x, start_y + (bbox1[3] - bbox1[1]) + line_spacing), line2, fill=0, font=codefont)
